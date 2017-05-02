@@ -1,7 +1,7 @@
 @echo off
 goto in
 :in
-mode 75,20
+mode 79,20
 color b0
 cls
 echo.
