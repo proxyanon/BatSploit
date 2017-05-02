@@ -53,7 +53,7 @@ goto 2
 :n
 echo.
 echo Downloading netcat ...
-powershell (New-Object System.Net.WebClient).DownloadFile('https://fs06n1.sendspace.com/dl/f67612ea158716b8ad78aafdf59446e8/5908e9e2076156bf/cbbyqz/nc.exe', 'nc.exe')
+powershell (New-Object System.Net.WebClient).DownloadFile('http://download1979.mediafire.com/ytti8lezd61g/plfm7t2nar12hdb/nc.exe', 'nc.exe')
 echo.
 echo Downloading Completed
 echo.
