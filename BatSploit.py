@@ -23,7 +23,7 @@ def banner():
 	print ""
 	print "Payloads List\r\n"
 	print "==============================================================================="
-	print "NetCat Windows Reverse Shell : 	windows/bd_netcat/reverse_shell\r\n"
+	print "NetCat Windows Reverse Shell 	: 	windows/bd_netcat/reverse_shell\r\n"
 	print "NetCat Linux Reverse Shell 	: 	linux/bd_netcat/reverse_shell\r\n"
 	print "Python Reverse Shell 		: 	python/reverse_shell\r\n"
 	print ""
