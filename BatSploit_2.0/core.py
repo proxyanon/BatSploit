@@ -46,13 +46,12 @@ class BatSploit(object):
 		sys.stdout.write(colored(" <danielfreire56@hotmail.com>\n", "grey"))
 
 	def usage(self, argv):
-		if self.platform == "Windows":
-			name_script = argv.split("\\") # windows only
-		else:
-			name_script = argv
-		#name_script = argv # linux or mac
-		index_name = len(name_script) - 1 
-		name = name_script[index_name] # nome do script no windows
+		name_script = argv.split("\\") # windows only
+		try:
+			index_name = len(name_script) - 1 
+			name = name_script[index_name] # nome do script no windows
+		except IndexError:
+			name = argv
 		sys.stdout.write(colored("\n ======", "green"))
 		sys.stdout.write(colored(" Usage of tool ", "white"))
 		sys.stdout.write(colored("======\n", "green"))
@@ -64,13 +63,12 @@ class BatSploit(object):
 		sys.stdout.write(colored(" -payload : Create payloads\n", "white"))
 
 	def usage_bind(self, argv):
-		if self.platform == "Windows":
-			name_script = argv.split("\\") # windows only
-		else:
-			name_script = argv
-		#name_script = argv # linux or mac
-		index_name = len(name_script) - 1 
-		name = name_script[index_name] # nome do script no windows
+		name_script = argv.split("\\") # windows only
+		try:
+			index_name = len(name_script) - 1 
+			name = name_script[index_name] # nome do script no windows
+		except IndexError:
+			name = argv
 		sys.stdout.write(colored("\n ======", "green"))
 		sys.stdout.write(colored(" Usage to start handler ", "white"))
 		sys.stdout.write(colored("======\n", "green"))
@@ -78,13 +76,12 @@ class BatSploit(object):
 		sys.stdout.write(colored(" -bind LHOST=127.0.0.1 LPORT=1337\n", "white"))
 
 	def usage_payload(self, argv):
-		if self.platform == "Windows":
-			name_script = argv.split("\\") # windows only
-		else:
-			name_script = argv
-		#name_script = argv # linux or mac
-		index_name = len(name_script) - 1 
-		name = name_script[index_name] # nome do script no windows
+		name_script = argv.split("\\") # windows only
+		try:
+			index_name = len(name_script) - 1 
+			name = name_script[index_name] # nome do script no windows
+		except IndexError:
+			name = argv
 		sys.stdout.write(colored("\n ======", "green"))
 		sys.stdout.write(colored(" Usage to start handler ", "white"))
 		sys.stdout.write(colored("======\n", "green"))
