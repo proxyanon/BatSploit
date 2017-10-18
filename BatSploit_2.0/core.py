@@ -16,7 +16,7 @@ try:
 	from termcolor import colored
 	init()
 except ImportError:
-	sys.stdoutt.write("[!] Some modules needed to use BatSploit 2\n[*] Run : setup.py\n")
+	sys.stdout.write("[!] Some modules needed to use BatSploit 2\n[*] Run : setup.py\n")
 	sys.exit()
 
 class BatSploit(object):
