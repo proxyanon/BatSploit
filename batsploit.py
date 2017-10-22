@@ -48,5 +48,11 @@ else:
 							sys.exit()
 						else:
 							batsploit.bind(lhost, lport)
+					else:
+						quest = raw_input("\n[?] Do you want start handler [Y/N] : ") # pergunta se quer que inicie o handler automáticamente
+						if quest == "N" or quest == "n":
+							sys.exit()
+						else:
+							batsploit.nc_bind(lhost, lport)
 			else:
 				batsploit.usage_payload(sys.argv[0])  # mostra como o create payloads é usado

