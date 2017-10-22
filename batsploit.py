@@ -48,6 +48,8 @@ else:
 							sys.exit()
 						else:
 							batsploit.bind(lhost, lport)
+					elif 'meterpreter' in payload:
+						sys.exit()
 					else:
 						quest = raw_input("\n[?] Do you want start handler [Y/N] : ") # pergunta se quer que inicie o handler automáticamente
 						if quest == "N" or quest == "n":
