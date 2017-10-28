@@ -21,8 +21,14 @@ sys.stdout.write("\n[+] Setup BatSploit 2\n")
 try:
 	print "\n[+] Platform : %s"%(os_id[0])
 	print "[+] Arch : %s"%(os_id[4])
-
 	try:
+		os.makedirs('compiled')
+	except WindowsError:
+		pass
+	try:
+		cmd = os.popen("pyinstaller -h")
+		if not "usage:" in cmd.read():
+			os.system("pip install pyinstaller")
 		import requests
 		from termcolor import colored
 		from colorama import init
@@ -56,6 +62,9 @@ try:
 		sys.stdout.flush()
 		sys.exit()
 	except ImportError:
+		cmd = os.popen("pyinstaller -h")
+		if not "usage:" in cmd.read():
+			os.system("pip install pyinstaller")
 		quest = raw_input("\n[?] Do you want install modules needed [Y/N] : ")
 		if quest == "N" or quest == "n":
 			sys.stdout.write("\n[X] Saindo ...\n")
@@ -68,4 +77,3 @@ try:
 except KeyboardInterrupt:
 	sys.stdout.write("\n[X] Saindo ...\n")
 	sys.exit()
-
