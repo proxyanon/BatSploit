@@ -18,62 +18,102 @@ if os_id[0] == "Windows":
 elif os_id[0] == "Linux":
 	os.system("clear")
 sys.stdout.write("\n[+] Setup BatSploit 2\n")
-try:
-	print "\n[+] Platform : %s"%(os_id[0])
-	print "[+] Arch : %s"%(os_id[4])
+
+def install_libs(so):
+	if so == "Windows":
+		os.system("pip install requests && pip install termcolor && pip install colorama && pip install pyinstaller")
+	elif so == "Linux":
+		os.system("pip install requests && pip install termcolor && pip install colorama")
+
+def check_and_install_libs(so):
 	try:
-		os.makedirs('compiled')
-	except WindowsError:
-		pass
-	try:
-		cmd = os.popen("pyinstaller -h")
-		if not "usage:" in cmd.read():
-			os.system("pip install pyinstaller")
+		# verifica as bibliotecas necessarias
 		import requests
 		from termcolor import colored
 		from colorama import init
 		init()
-		if os_id[0] == "Windows":
-			if os.path.exists("cpp/bin") == False:
-				quest_1 = raw_input("[?] Do want install compillers to C++ [Y/N] : ")
-				if quest_1 == "N" or quest_1 == "n":
-					sys.exit()
-				else:
-					print "\n---------------- This may take a while :( ----------------\n"
-					print "[+] Creating dirs"
-					os.system("mkdir cpp")
-					print "[+] Download compilers, don't close the window !"
-					r=requests.get("https://eternallybored.org/misc/wget/current/wget.exe")
-					with open("wget.exe", "wb") as code:
-						code.write(r.content)
-					print ""
-					os.system('move "wget.exe" "cpp/" > null && del null && cd cpp && wget -O mingw.rar https://sourceforge.net/p/mingw32/code/ci/master/tree/mingw.rar?format=raw && wget -O unrar.exe https://sourceforge.net/p/mingw32/code/ci/master/tree/UnRAR.exe?format=raw')
-					os.system('cd cpp && unrar x mingw.rar && del mingw.rar && del unrar.exe && del wget.exe')
-					print "[+] Download complete !"
-					print "[+] Decompressing MinGW"
-		elif os_id[0] == "Linux":
-			print "[+] Creating dirs"
-			print "[+] Download compilers"
-			os.system("sudo apt-get install g++ cpp gcc mingw32")
-		sys.stdout.write(colored("\n[+]", "green"))
-		sys.stdout.write(colored(" BatSploit 2.0 is installed !\n", "white"))
-		sys.stdout.write(colored("\n[+]", "green"))
-		sys.stdout.write(colored(" Setup finalized, try run setup.py again !\n", "white"))
-		sys.stdout.flush()
-		sys.exit()
+		return 0
 	except ImportError:
-		cmd = os.popen("pyinstaller -h")
-		if not "usage:" in cmd.read():
-			os.system("pip install pyinstaller")
-		quest = raw_input("\n[?] Do you want install modules needed [Y/N] : ")
+		install_libs(so)
+
+def check_dependencies(so):
+	# verifica se existem os compiladores de c++
+	if so == "Windows":
+		if os.path.exists("cpp/bin") == True:
+				return 0
+		else:
+				return 1
+	elif so == "Linux":
+		cmd = os.popen("i586-mingw32msvc-gcc --version")
+		if 'Copyright' in cmd.read():
+			return 0
+		else:
+			return 1
+
+def check_and_install_dependencies(so, quest):
+	# verifica e instala se necessário os compiladores de c++
+	if os.path.exists("compiled") == False:
+		try:
+			if so == "Linux":
+				os.makedirs("compiled")
+				os.system("sudo chmod 777 compiled")
+			elif so == "Windows":
+				os.makedirs("compiled")
+		except WindowsError:
+			pass
+	else:
+		pass
+	# verifica os compiladores de c++
+	if so == "Windows":
+		if os.path.exists("cpp/bin") == False:
+			if quest == "N" or quest == "n":
+				return 0
+			else:
+				os.makedirs("cpp")
+				r=requests.get("https://eternallybored.org/misc/wget/current/wget.exe")
+				with open("wget.exe", "wb") as code:
+					code.write(r.content)
+				os.system('move "wget.exe" "cpp/" > null && del null && cd cpp && wget -O mingw.rar https://sourceforge.net/p/mingw32/code/ci/master/tree/mingw.rar?format=raw && wget -O unrar.exe https://sourceforge.net/p/mingw32/code/ci/master/tree/UnRAR.exe?format=raw')
+				os.system('cd cpp && unrar x mingw.rar && del mingw.rar && del unrar.exe && del wget.exe')
+	elif so == "Linux":
+		cmd = os.popen("i586-mingw32msvc-gcc --version")
+		if 'Copyright' in cmd.read():
+			return 0
+		else:
+			os.system("sudo apt-get install g++ gcc cpp aptitude && aptitude install mingw32")
+
+
+try:
+	print "\n[+] Platform : %s"%(os_id[0])
+	print "[+] Arch : %s"%(os_id[4])
+	if check_and_install_libs(os_id[0]) == 0:
+		print "\n[+] All dependencies are installed"
+	else:
+		print "\n[+] Downloading and installing dependencies"
+		check_and_install_libs(os_id[0])
+	if check_dependencies(os_id[0]) == 0:
+		print "\n[+] BatSploit 2 is complete, run : batsploit.py"
+		sys.exit()
+	else:
+		quest = raw_input("[?] Do want install compillers to C++ [Y/N] : ")
 		if quest == "N" or quest == "n":
-			sys.stdout.write("\n[X] Saindo ...\n")
 			sys.exit()
-		elif quest == "Y" or quest == "y" or quest == "":
-			sys.stdout.write("\n[+] Installing modules\n")
-			os.system("pip install colorama && pip install termcolor && pip install requests")
-			sys.stdout.write("\n[+] Setup finalized, try run setup.py now\n")
-			sys.stdout.flush()
+		else:
+			print "\n---------------- This may take a while :( ----------------\n"
+			print "[+] Creating dirs"
+			print "[+] Download compilers, don't close the window !"
+			if check_and_install_dependencies(os_id[0], quest) == 0:
+				from termcolor import colored
+				from colorama import init
+				init()
+				sys.stdout.write(colored("\n[+] ", "green"))
+				sys.stdout.write(colored(" All requisists are satisfied\n, run batsploit.py", "white", attrs='blink'))
+				sys.stdout.flush()
+				sys.exit()
+			else:
+				print "[+] Download complete !"
+				print "\n[+] Setup finalized, try run setup.py now\n"
+				sys.stdout.flush()
 except KeyboardInterrupt:
 	sys.stdout.write("\n[X] Saindo ...\n")
 	sys.exit()
