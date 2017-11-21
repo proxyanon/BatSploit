@@ -75,13 +75,6 @@ def check_and_install_dependencies(so, quest):
 					code.write(r.content)
 				os.system('move "wget.exe" "cpp/" > null && del null && cd cpp && wget -O mingw.rar https://sourceforge.net/p/mingw32/code/ci/master/tree/mingw.rar?format=raw && wget -O unrar.exe https://sourceforge.net/p/mingw32/code/ci/master/tree/UnRAR.exe?format=raw')
 				os.system('cd cpp && unrar x mingw.rar && del mingw.rar && del unrar.exe && del wget.exe')
-	elif so == "Linux":
-		cmd = os.popen("i586-mingw32msvc-gcc --version")
-		if 'Copyright' in cmd.read():
-			return 0
-		else:
-			os.system("sudo apt-get install g++ gcc cpp aptitude && aptitude install mingw32")
-
 
 try:
 	print "\n[+] Platform : %s"%(os_id[0])
