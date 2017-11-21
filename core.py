@@ -121,7 +121,10 @@ class BatSploit(object):
 	def list_payloads(self):
 		# essa função lista os payloads
 		print "\n[!] Payloads List"
-		payloads = ['python/netcat/reverse_tcp', 'python/batsploit/reverse_tcp', 'python/meterpreter/reverse_tcp', 'python/ransomware', 'windows/netcat/reverse_tcp', 'windows/c++/powershell_reverse_tcp', 'windows/c++/socket_reverse_tcp', 'linux/netcat/reverse_tcp', 'php/socket/reverse_tcp', 'php/netcat/reverse_tcp', 'php/meterpreter/reverse_tcp', 'ruby/netcat/reverse_tcp'] # tupple contendo os payloads
+		if self.platform == "Windows":
+			payloads = ['python/netcat/reverse_tcp', 'python/batsploit/reverse_tcp', 'python/meterpreter/reverse_tcp', 'python/ransomware', 'windows/netcat/reverse_tcp', 'windows/c++/powershell_reverse_tcp', 'windows/c++/socket_reverse_tcp', 'linux/netcat/reverse_tcp', 'php/socket/reverse_tcp', 'php/netcat/reverse_tcp', 'php/meterpreter/reverse_tcp', 'ruby/netcat/reverse_tcp'] # tupple contendo os payloads
+		else:
+			payloads = ['python/netcat/reverse_tcp', 'python/batsploit/reverse_tcp', 'python/meterpreter/reverse_tcp', 'python/ransomware', 'windows/netcat/reverse_tcp', 'linux/netcat/reverse_tcp', 'php/socket/reverse_tcp', 'php/netcat/reverse_tcp', 'php/meterpreter/reverse_tcp', 'ruby/netcat/reverse_tcp'] # tupple contendo os payloads
 		for payload in payloads:
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored(payload, "white"))
