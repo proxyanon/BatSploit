@@ -145,7 +145,7 @@ class BatSploit(object):
 		if self.platform == "Windows":
 			os.system("start python handler.py %s %s".format(host=host, port=int(port)))
 		elif self.platform == "Linux":
-			os.system("gnome-terminal python handler.py %s %s".format(host=host, port=int(port)))
+			os.system("gnome-terminal python handler.py {host} {port}".format(host=host, port=int(port)))
 
 	def nc_bind(self, lhost, lport):
 		# isso escuta as conecxoes com netcat
